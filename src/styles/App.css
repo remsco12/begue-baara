@@ -163,3 +163,32 @@ body {
     margin: 0 0.5rem;
   }
 }
+
+/* Optimisations mobile */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 10px;
+  }
+  
+  /* Empêcher le zoom sur les inputs */
+  input, select, textarea {
+    font-size: 16px; /* Prévenir le zoom sur iOS */
+  }
+  
+  /* Meilleur touch target */
+  button, .nav-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Support PWA */
+@media (display-mode: standalone) {
+  .header {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

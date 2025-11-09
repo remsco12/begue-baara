@@ -8,7 +8,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
     telephone: '',
     quartier: '',
     region: '',
-    pays: 'Sénégal',
+    pays: 'Mali',
     profession: '',
     entreprise: '',
     formation: '',
@@ -39,7 +39,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
       telephone: '',
       quartier: '',
       region: '',
-      pays: 'Sénégal',
+      pays: 'Mali',
       profession: '',
       entreprise: '',
       formation: '',
@@ -102,7 +102,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                 value={formData.telephone}
                 onChange={handleChange}
                 required
-                placeholder="Ex: +221 77 123 45 67"
+                placeholder="Ex: +223 77 13 45 67"
               />
             </div>
           </section>
@@ -131,7 +131,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                   value={formData.region}
                   onChange={handleChange}
                   required
-                  placeholder="Ex: Dakar, Thiès..."
+                  placeholder="Ex: Bamako, Bougouni..."
                 />
               </div>
 
@@ -142,8 +142,8 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                   value={formData.pays}
                   onChange={handleChange}
                 >
-                  <option value="Sénégal">Sénégal</option>
-                  <option value="Mali">Mali</option>
+                  <option value="Sénégal">Mali</option>
+                  <option value="Mali">Sénégal</option>
                   <option value="Côte d'Ivoire">Côte d'Ivoire</option>
                   <option value="Guinée">Guinée</option>
                   <option value="France">France</option>
