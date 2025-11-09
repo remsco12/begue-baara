@@ -142,8 +142,8 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                   value={formData.pays}
                   onChange={handleChange}
                 >
-                  <option value="Sénégal">Mali</option>
-                  <option value="Mali">Sénégal</option>
+                  <option value="Mali">Mali</option>
+                  <option value="Sénégal">Sénégal</option>
                   <option value="Côte d'Ivoire">Côte d'Ivoire</option>
                   <option value="Guinée">Guinée</option>
                   <option value="France">France</option>
