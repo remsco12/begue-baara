@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
-import "./styles/App.css";
+import React, { useState, useEffect } from 'react';
+import './styles/App.css';
+import Header from './components/Header';
+import Home from './pages/Home';
+import Register from './pages/Register';
+import Search from './pages/Search';
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('home');
   const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedPersons = localStorage.getItem("begueBaaraPersons");
+    const savedPersons = localStorage.getItem('begueBaaraPersons');
     if (savedPersons) {
       setPersons(JSON.parse(savedPersons));
     }
@@ -21,39 +26,64 @@ function App() {
     };
     const updatedPersons = [...persons, newPerson];
     setPersons(updatedPersons);
-    localStorage.setItem("begueBaaraPersons", JSON.stringify(updatedPersons));
+    localStorage.setItem('begueBaaraPersons', JSON.stringify(updatedPersons));
   };
 
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Chargement de l'application Bégué Baara...</p>
-      </div>
-    );
-  }
+  const renderPage = () => {
+    if (loading) {
+      return (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Chargement de l'application Bégué Baara...</p>
+        </div>
+      );
+    }
+
+    switch(currentPage) {
+      case 'home':
+        return <Home persons={persons} />;
+      case 'register':
+        return <Register onAddPerson={addPerson} />;
+      case 'search':
+        return <Search persons={persons} />;
+      default:
+        return <Home persons={persons} />;
+    }
+  };
 
   return (
     <div className="App">
-      <header className="header">
-        <h1>🕌 Bégué Baara</h1>
-        <p>Réseau Allah Don - Connectez plus de 100,000 membres</p>
-      </header>
+      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <main className="main-content">
-        <div className="stats">
-          <div className="stat">
-            <h3>{persons.length}</h3>
-            <p>Membres inscrits</p>
+        {renderPage()}
+      </main>
+      
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>Bégué Baara</h3>
+              <p>Le réseau social de la communauté Allah Don</p>
+              <p>Connectant plus de {persons.length} membres</p>
+            </div>
+            <div className="footer-section">
+              <h4>Navigation</h4>
+              <button onClick={() => setCurrentPage('home')}>Accueil</button>
+              <button onClick={() => setCurrentPage('register')}>S'inscrire</button>
+              <button onClick={() => setCurrentPage('search')}>Rechercher</button>
+            </div>
+            <div className="footer-section">
+              <h4>Contact</h4>
+              <p>📧 contact@beguebaara.org</p>
+              <p>📞 +223 92 87 73 35</p>
+              <p>📍 Bougouni, Mali</p>
+            </div>
           </div>
-          <div className="stat">
-            <h3>100,000+</h3>
-            <p>Objectif</p>
+          <div className="footer-bottom">
+            <p>&copy; 2025 Bégué Baara. Tous droits réservés.</p>
           </div>
         </div>
-        <button className="cta-button">
-          Rejoindre le réseau
-        </button>
-      </main>
+      </footer>
     </div>
   );
 }

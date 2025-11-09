@@ -1,0 +1,202 @@
+.search-filters {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.filters-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f8ff;
+}
+
+.filters-header h3 {
+  color: #2c5aa0;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #2c5aa0;
+  box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+}
+
+/* Styles pour les boutons de filtre */
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.filter-option:hover {
+  border-color: #2c5aa0;
+  background: #f8faff;
+}
+
+.filter-option.selected {
+  border-color: #2c5aa0;
+  background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+  color: white;
+}
+
+.filter-option input[type="radio"] {
+  display: none;
+}
+
+.filter-option span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .search-filters {
+    position: static;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .filter-option {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-options {
+    flex-direction: column;
+  }
+  
+  .filter-option {
+    min-width: auto;
+  }
+}
+/* Styles pour les boutons d'option dans les filtres */
+.search-filters .option-buttons {
+  margin: 0.5rem 0;
+}
+
+.search-filters .option-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.search-filters .option-button {
+  display: block;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+  text-align: left;
+  width: 100%;
+}
+
+.search-filters .option-button:hover {
+  border-color: #2c5aa0;
+  transform: translateY(-1px);
+}
+
+.search-filters .option-button.selected {
+  border-color: #2c5aa0;
+  background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+  color: white;
+}
+
+.search-filters .option-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.search-filters .option-icon {
+  font-size: 1.2rem;
+}
+
+.search-filters .option-text strong {
+  font-size: 0.9rem;
+}
+
+/* Indication du type de recherche sélectionné */
+.selected-situation {
+  background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* Styles pour les filtres spécifiques */
+.filter-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+/* Animation pour l'apparition des filtres conditionnels */
+.filter-group {
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

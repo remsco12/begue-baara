@@ -1,0 +1,115 @@
+.person-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e8f4fd;
+}
+
+.person-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.person-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.person-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.person-basic-info h3 {
+  color: #2c5aa0;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.telephone {
+  color: #666;
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+.location {
+  color: #888;
+  margin: 0.2rem 0;
+  font-size: 0.85rem;
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.value {
+  color: #333;
+  font-size: 0.9rem;
+  flex: 2;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .person-card {
+    padding: 1rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .person-photo {
+    align-self: center;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .value {
+    text-align: left;
+  }
+}
