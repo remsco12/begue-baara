@@ -1,8 +1,3 @@
-# Supprimer l'ancien package.json
-Remove-Item -Force package.json
-
-# Créer le nouveau package.json avec JSON valide
-@'
 {
   "name": "begue-baara",
   "version": "1.0.0",
@@ -31,4 +26,3 @@ Remove-Item -Force package.json
     ]
   }
 }
-'@ | Out-File -FilePath "package.json" -Encoding UTF8
