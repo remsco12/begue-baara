@@ -1,3 +1,7 @@
+# Supprimer l'ancien package.json
+Remove-Item -Force package.json
+
+# Créer le nouveau package.json avec JSON valide
 @'
 {
   "name": "begue-baara",
