@@ -113,7 +113,7 @@ const SearchResults = ({ persons, selectedSituation }) => {
             <div className="no-results">
               <div className="no-results-icon">
                 {selectedSituation === 'travail' ? '💼' : 
-                 selectedSituation === 'formation' ? '🎓' : '🔍'}
+                 selectedSituation === 'formation' ? '👤' : '🔍'}
               </div>
               <h3>Aucun membre ne correspond à votre recherche</h3>
               <p>Essayez de modifier vos critères de recherche ou élargissez vos filtres</p>
