@@ -222,7 +222,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             {selectedChoice === 'non-travail' && (
               <div className="option-fields">
                 <div className="form-group">
-                  <label>Domaine de recherche *</label>
+                  <label>Métier de formation *</label>
                   <input
                     type="text"
                     name="formation"
@@ -351,7 +351,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                 {selectedChoice === 'non-travail' && (
                   <>
                     <div className="confirmation-row">
-                      <span className="confirmation-label">Domaine recherché:</span>
+                      <span className="confirmation-label">Métier de formation:</span>
                       <span className="confirmation-value">{getFieldDisplayValue(formData.formation)}</span>
                     </div>
                     <div className="confirmation-row">

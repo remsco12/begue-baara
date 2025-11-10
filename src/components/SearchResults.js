@@ -74,11 +74,37 @@ const SearchResults = ({ persons, selectedSituation }) => {
     }
   };
 
+  // Compter les travailleurs et non-travailleurs pour l'affichage "Tous les membres"
+  const stats = useMemo(() => {
+    if (selectedSituation === 'tous') {
+      const travailleurs = filteredPersons.filter(person => person.travail === true).length;
+      const nonTravailleurs = filteredPersons.filter(person => person.travail === false).length;
+      return { travailleurs, nonTravailleurs };
+    }
+    return { travailleurs: 0, nonTravailleurs: 0 };
+  }, [filteredPersons, selectedSituation]);
+
   return (
     <div className="search-results">
       <div className="results-header">
         <h1>🔍 {getSituationTitle()}</h1>
         <p>Filtrez les résultats selon vos critères</p>
+        
+        {/* Statistiques pour "Tous les membres" */}
+        {selectedSituation === 'tous' && (
+          <div className="members-stats">
+            <div className="stat-item travail-stat">
+              <span className="stat-icon">💼</span>
+              <span className="stat-count">{stats.travailleurs}</span>
+              <span className="stat-label">Travailleurs</span>
+            </div>
+            <div className="stat-item non-travail-stat">
+              <span className="stat-icon">👤</span>
+              <span className="stat-count">{stats.nonTravailleurs}</span>
+              <span className="stat-label">En recherche</span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="search-content">
@@ -105,7 +131,11 @@ const SearchResults = ({ persons, selectedSituation }) => {
 
           <div className="persons-grid">
             {filteredPersons.map(person => (
-              <PersonCard key={person.id} person={person} />
+              <PersonCard 
+                key={person.id} 
+                person={person} 
+                showStatus={selectedSituation === 'tous'} // Afficher le statut seulement pour "Tous les membres"
+              />
             ))}
           </div>
 
