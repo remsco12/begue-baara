@@ -43,10 +43,10 @@ const Search = ({ persons }) => {
                 className={`choice-button formation ${selectedSituation === 'formation' ? 'selected' : ''}`}
                 onClick={() => handleChoiceSelect('formation')}
               >
-                <div className="choice-icon">🎓</div>
+                <div className="choice-icon">👤</div>
                 <div className="choice-text">
-                  <h3>En formation</h3>
-                  <p>Personnes en études ou formation</p>
+                  <h3>En quête d’emploi</h3>
+                  <p>Personnes en quête d’emploi</p>
                 </div>
                 <div className="choice-arrow">→</div>
               </button>

@@ -45,10 +45,10 @@ const Register = ({ onAddPerson }) => {
                 className={`choice-button formation ${selectedChoice === 'formation' ? 'selected' : ''}`}
                 onClick={() => handleChoiceSelect('formation')}
               >
-                <div className="choice-icon">🎓</div>
+                <div className="choice-icon">👤</div>
                 <div className="choice-text">
                   <h3>Je ne travaille pas</h3>
-                  <p>En formation, études ou autre situation</p>
+                  <p>En quête d’emploi</p>
                 </div>
                 <div className="choice-arrow">→</div>
               </button>
