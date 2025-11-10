@@ -215,7 +215,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                     value={formData.formation}
                     onChange={handleChange}
                     required
-                    placeholder="Ex: Étudiant en Médecine, Formation en Informatique..."
+                    placeholder="Ex: Mecanicien, Médecin, Enseignant..."
                   />
                 </div>
               </div>
