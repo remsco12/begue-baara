@@ -75,7 +75,7 @@ function App() {
             <div className="footer-section">
               <h4>Contact</h4>
               <p>📧 contact@beguebaara.org</p>
-              <p>📞 +223 92 87 73 35</p>
+              <p>📞 +223 76 32 64 28 / 84 26 24 87 / 92 87 73 35</p>
               <p>📍 Bougouni, Mali</p>
             </div>
           </div>
