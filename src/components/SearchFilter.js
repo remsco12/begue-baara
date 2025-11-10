@@ -14,7 +14,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
         {selectedSituation && (
           <div className="selected-situation">
             Recherche : {selectedSituation === 'travail' ? 'Travailleurs' : 
-                        selectedSituation === 'formation' ? 'En formation' : 'Tous les membres'}
+                        selectedSituation === 'non-travailleur' ? 'En quête d’emploi' : 'Tous les membres'}
           </div>
         )}
       </div>
