@@ -163,7 +163,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                 </div>
                 <div className="option-display-text">
                   <strong>
-                    {selectedChoice === 'travail' ? 'Travailleur' : 'En formation'}
+                    {selectedChoice === 'travail' ? 'Travailleur' : 'En quête d’emploi'}
                   </strong>
                   <small>
                     {selectedChoice === 'travail' 
@@ -205,7 +205,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             )}
 
             {/* Champs pour non-travailleurs */}
-            {selectedChoice === 'Formation' && (
+            {selectedChoice === 'formation' && (
               <div className="option-fields">
                 <div className="form-group">
                   <label>Formation *</label>
