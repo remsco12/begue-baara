@@ -118,7 +118,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                 value={formData.quartier}
                 onChange={handleChange}
                 required
-                placeholder="Ex: HLM, Grand Yoff..."
+                placeholder="Ex: Titibougou, Kalanba-coura..."
               />
             </div>
 
@@ -159,7 +159,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             <div className="selected-option-display">
               <div className={`option-display ${selectedChoice}`}>
                 <div className="option-display-icon">
-                  {selectedChoice === 'travail' ? '💼' : '🎓'}
+                  {selectedChoice === 'travail' ? '💼' : '👤'}
                 </div>
                 <div className="option-display-text">
                   <strong>
