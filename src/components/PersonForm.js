@@ -211,7 +211,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                   <label>Profession *</label>
                   <input
                     type="text"
-                    name="Profession"
+                    name="Formation"
                     value={formData.formation}
                     onChange={handleChange}
                     required
