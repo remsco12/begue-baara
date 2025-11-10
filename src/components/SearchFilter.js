@@ -109,7 +109,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
           name="quartier"
           value={filters.quartier}
           onChange={handleInputChange}
-          placeholder="Ex: HLM, Grand Yoff..."
+          placeholder="Ex: Titibougou, kalanba-coura..."
           className="filter-input"
         />
       </div>
