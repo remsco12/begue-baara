@@ -97,7 +97,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
           name="region"
           value={filters.region}
           onChange={handleInputChange}
-          placeholder="Ex: Dakar, Thiès..."
+          placeholder="Ex: Bamako, bougouni..."
           className="filter-input"
         />
       </div>
