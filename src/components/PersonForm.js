@@ -208,7 +208,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             {selectedChoice === 'formation' && (
               <div className="option-fields">
                 <div className="form-group">
-                  <label>Profession *</label>
+                  <label>Formation *</label>
                   <input
                     type="text"
                     name="Profession"
