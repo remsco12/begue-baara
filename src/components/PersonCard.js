@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/PersonCard.css';
 
-const PersonCard = ({ person, showStatus = false }) => {
+const PersonCard = ({ person, showStatus = false, onDelete  }) => {
   const isTravailleur = person.travail === true;
   
   // Fonction pour générer une couleur basée sur le statut
@@ -25,6 +25,17 @@ const PersonCard = ({ person, showStatus = false }) => {
         <div className={`person-status ${isTravailleur ? 'status-travail' : 'status-non-travail'}`}>
           {isTravailleur ? '💼 Travaille' : '👤 Recherche'}
         </div>
+      )}
+
+      {/* Bouton de suppression */}
+      {onDelete && (
+        <button 
+          className="delete-btn"
+          onClick={() => onDelete(person.id, `${person.prenom} ${person.nom}`)}
+          title="Supprimer ce membre"
+        >
+          🗑️
+        </button>
       )}
       
       <div className="person-photo">

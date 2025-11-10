@@ -3,7 +3,7 @@ import SearchFilter from './SearchFilter';
 import PersonCard from './PersonCard';
 import '../styles/Search.css';
 
-const SearchResults = ({ persons, selectedSituation }) => {
+const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
   const [filters, setFilters] = useState({
     searchTerm: '',
     profession: '',
@@ -13,6 +13,16 @@ const SearchResults = ({ persons, selectedSituation }) => {
     quartier: '',
     daara: ''
   });
+
+  const handleDeletePerson = async (personId, personName) => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer ${personName} ?`)) {
+      const result = await onDeletePerson(personId);
+      if (result.success) {
+        alert('Membre supprimé avec succès');
+      }
+    }
+  };
+
 
   const filteredPersons = useMemo(() => {
     return persons.filter(person => {
@@ -130,14 +140,15 @@ const SearchResults = ({ persons, selectedSituation }) => {
           </div>
 
           <div className="persons-grid">
-            {filteredPersons.map(person => (
-              <PersonCard 
-                key={person.id} 
-                person={person} 
-                showStatus={selectedSituation === 'tous'} // Afficher le statut seulement pour "Tous les membres"
-              />
-            ))}
-          </div>
+      {filteredPersons.map(person => (
+        <PersonCard 
+          key={person.id} 
+          person={person} 
+          showStatus={selectedSituation === 'tous'}
+          onDelete={handleDeletePerson}
+        />
+      ))}
+    </div>
 
           {filteredPersons.length === 0 && (
             <div className="no-results">
