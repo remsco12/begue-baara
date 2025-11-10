@@ -54,13 +54,13 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
     <div className="form-container">
       <form className="person-form" onSubmit={handleSubmit}>
         <div className="form-header">
-          <h2>📝 Inscription - {selectedChoice === 'travail' ? 'Travailleur' : 'En formation'}</h2>
+          <h2>📝 Inscription - {selectedChoice === 'travail' ? 'Travailleur' : 'Non travailleur'}</h2>
           <p>Complétez vos informations pour rejoindre le réseau</p>
         </div>
         
         <div className="selected-choice-banner">
           <div className={`choice-indicator ${selectedChoice}`}>
-            {selectedChoice === 'travail' ? '💼 Vous êtes travailleur' : '🎓 Vous êtes en formation'}
+            {selectedChoice === 'travail' ? '💼 Vous êtes travailleur' : '👤 Vous êtes en quête d’emploi'}
           </div>
         </div>
         
