@@ -205,7 +205,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             )}
 
             {/* Champs pour non-travailleurs */}
-            {selectedChoice === 'Profession' && (
+            {selectedChoice === 'Formation' && (
               <div className="option-fields">
                 <div className="form-group">
                   <label>Profession *</label>
