@@ -16,6 +16,8 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
     photo: ''
   });
 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -26,7 +28,10 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    setShowConfirmation(true);
+  };
+
+  const confirmSubmission = () => {
     const personToAdd = {
       ...formData,
       travail: selectedChoice === 'travail'
@@ -46,8 +51,17 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
       daara: '',
       photo: ''
     });
+    setShowConfirmation(false);
     alert('Inscription réussie!');
-    onBack(); // Retour au choix après soumission
+    onBack();
+  };
+
+  const cancelSubmission = () => {
+    setShowConfirmation(false);
+  };
+
+  const getFieldDisplayValue = (value) => {
+    return value || 'Non renseigné';
   };
 
   return (
@@ -60,7 +74,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
         
         <div className="selected-choice-banner">
           <div className={`choice-indicator ${selectedChoice}`}>
-            {selectedChoice === 'travail' ? '💼 Vous êtes travailleur' : '👤 Vous êtes en quête d’emploi'}
+            {selectedChoice === 'travail' ? '💼 Vous êtes travailleur' : '👤 Vous êtes en quête d\'emploi'}
           </div>
         </div>
         
@@ -163,12 +177,12 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                 </div>
                 <div className="option-display-text">
                   <strong>
-                    {selectedChoice === 'travail' ? 'Travailleur' : 'En quête d’emploi'}
+                    {selectedChoice === 'travail' ? 'Travailleur' : 'En quête d\'emploi'}
                   </strong>
                   <small>
                     {selectedChoice === 'travail' 
                       ? 'Vous êtes actuellement en poste professionnel' 
-                      : 'Vous êtes à la recherche d’un emploi'
+                      : 'Vous êtes à la recherche d\'un emploi'
                     }
                   </small>
                 </div>
@@ -205,19 +219,30 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             )}
 
             {/* Champs pour non-travailleurs */}
-            {selectedChoice === 'formation' && (
+            {selectedChoice === 'non-travail' && (
               <div className="option-fields">
                 <div className="form-group">
-                  <label>Formation *</label>
+                  <label>Domaine de recherche *</label>
                   <input
                     type="text"
-                    name="Profession"
+                    name="formation"
                     value={formData.formation}
                     onChange={handleChange}
                     required
-                    placeholder="Ex: Mecanicien, Médecin, Enseignant..."
+                    placeholder="Ex: Informatique, Mécanique, Commerce..."
                   />
                 </div>
+
+                {/*<div className="form-group">
+                  <label>Niveau d'étude</label>
+                  <input
+                    type="text"
+                    name="profession"
+                    value={formData.profession}
+                    onChange={handleChange}
+                    placeholder="Ex: Bac, Licence, Master..."
+                  />
+                </div>*/}
               </div>
             )}
           </section>
@@ -238,7 +263,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             </div>
           </section>
 
-          <section className="form-section">
+          {/*<section className="form-section">
             <h3>🖼️ Photo de Profil</h3>
             
             <div className="form-group">
@@ -251,15 +276,130 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                 placeholder="https://example.com/photo.jpg"
               />
             </div>
-          </section>
+          </section>*/}
         </div>
 
         <div className="form-actions">
           <button type="submit" className="submit-btn">
-            ✅ S'inscrire au réseau
+            ✅ Vérifier et s'inscrire
           </button>
         </div>
       </form>
+
+      {/* Modal de confirmation */}
+      {showConfirmation && (
+        <div className="modal-overlay">
+          <div className="confirmation-modal">
+            <div className="modal-header">
+              <h3>🔍 Vérifiez vos informations</h3>
+              <p>Confirmez que toutes les informations sont correctes avant de vous inscrire</p>
+            </div>
+
+            <div className="confirmation-content">
+              <div className="confirmation-section">
+                <h4>👤 Informations Personnelles</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Prénom:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(formData.prenom)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Nom:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(formData.nom)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Téléphone:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(formData.telephone)}</span>
+                </div>
+              </div>
+
+              <div className="confirmation-section">
+                <h4>📍 Localisation</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Quartier:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(formData.quartier)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Région:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(formData.region)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Pays:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(formData.pays)}</span>
+                </div>
+              </div>
+
+              <div className="confirmation-section">
+                <h4>💼 Situation Professionnelle</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Statut:</span>
+                  <span className="confirmation-value">
+                    {selectedChoice === 'travail' ? 'Travailleur' : 'En recherche d\'emploi'}
+                  </span>
+                </div>
+                {selectedChoice === 'travail' && (
+                  <>
+                    <div className="confirmation-row">
+                      <span className="confirmation-label">Profession:</span>
+                      <span className="confirmation-value">{getFieldDisplayValue(formData.profession)}</span>
+                    </div>
+                    <div className="confirmation-row">
+                      <span className="confirmation-label">Entreprise:</span>
+                      <span className="confirmation-value">{getFieldDisplayValue(formData.entreprise)}</span>
+                    </div>
+                  </>
+                )}
+                {selectedChoice === 'non-travail' && (
+                  <>
+                    <div className="confirmation-row">
+                      <span className="confirmation-label">Domaine recherché:</span>
+                      <span className="confirmation-value">{getFieldDisplayValue(formData.formation)}</span>
+                    </div>
+                    <div className="confirmation-row">
+                      <span className="confirmation-label">Niveau d'étude:</span>
+                      <span className="confirmation-value">{getFieldDisplayValue(formData.profession)}</span>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="confirmation-section">
+                <h4>📚 Information Daara</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Nom du Daara:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(formData.daara)}</span>
+                </div>
+              </div>
+
+              {/*formData.photo && (
+                <div className="confirmation-section">
+                  <h4>🖼️ Photo de Profil</h4>
+                  <div className="confirmation-row">
+                    <span className="confirmation-label">URL photo:</span>
+                    <span className="confirmation-value url">{formData.photo}</span>
+                  </div>
+                </div>
+              )*/}
+            </div>
+
+            <div className="modal-actions">
+              <button 
+                type="button" 
+                className="cancel-btn"
+                onClick={cancelSubmission}
+              >
+                ✏️ Modifier les informations
+              </button>
+              <button 
+                type="button" 
+                className="confirm-btn"
+                onClick={confirmSubmission}
+              >
+                ✅ Confirmer l'inscription
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

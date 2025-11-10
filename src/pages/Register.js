@@ -3,8 +3,8 @@ import PersonForm from '../components/PersonForm';
 import '../styles/Register.css';
 
 const Register = ({ onAddPerson }) => {
-  const [step, setStep] = useState('choice'); // 'choice' ou 'form'
-  const [selectedChoice, setSelectedChoice] = useState(''); // 'travail' ou 'formation'
+  const [step, setStep] = useState('choice');
+  const [selectedChoice, setSelectedChoice] = useState('');
 
   const handleChoiceSelect = (choice) => {
     setSelectedChoice(choice);
@@ -27,7 +27,7 @@ const Register = ({ onAddPerson }) => {
             </div>
             
             <div className="choice-buttons">
-              {/* Bouton Je travaille - toujours visible */}
+              {/* Bouton Je travaille */}
               <button 
                 className={`choice-button travail ${selectedChoice === 'travail' ? 'selected' : ''}`}
                 onClick={() => handleChoiceSelect('travail')}
@@ -40,15 +40,15 @@ const Register = ({ onAddPerson }) => {
                 <div className="choice-arrow">→</div>
               </button>
 
-              {/* Bouton Je ne travaille pas - toujours visible */}
+              {/* CORRECTION ICI : 'formation' → 'non-travail' */}
               <button 
-                className={`choice-button formation ${selectedChoice === 'formation' ? 'selected' : ''}`}
-                onClick={() => handleChoiceSelect('formation')}
+                className={`choice-button formation ${selectedChoice === 'non-travail' ? 'selected' : ''}`}
+                onClick={() => handleChoiceSelect('non-travail')} // Changé ici
               >
                 <div className="choice-icon">👤</div>
                 <div className="choice-text">
                   <h3>Je ne travaille pas</h3>
-                  <p>En quête d’emploi</p>
+                  <p>En quête d'emploi</p>
                 </div>
                 <div className="choice-arrow">→</div>
               </button>

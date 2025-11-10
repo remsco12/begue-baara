@@ -3,7 +3,7 @@ import SearchResults from '../components/SearchResults';
 import '../styles/Search.css';
 
 const Search = ({ persons }) => {
-  const [step, setStep] = useState('choice'); // 'choice' ou 'results'
+  const [step, setStep] = useState('choice');
   const [selectedSituation, setSelectedSituation] = useState('');
 
   const handleChoiceSelect = (situation) => {
@@ -39,14 +39,15 @@ const Search = ({ persons }) => {
                 <div className="choice-arrow">→</div>
               </button>
 
+              {/* CORRECTION ICI : 'formation' → 'non-travail' */}
               <button 
-                className={`choice-button formation ${selectedSituation === 'formation' ? 'selected' : ''}`}
-                onClick={() => handleChoiceSelect('formation')}
+                className={`choice-button formation ${selectedSituation === 'non-travail' ? 'selected' : ''}`}
+                onClick={() => handleChoiceSelect('non-travail')} // Changé ici
               >
                 <div className="choice-icon">👤</div>
                 <div className="choice-text">
                   <h3>Non travailleurs</h3>
-                  <p>Personnes en quête d’emploi</p>
+                  <p>Personnes en quête d'emploi</p>
                 </div>
                 <div className="choice-arrow">→</div>
               </button>

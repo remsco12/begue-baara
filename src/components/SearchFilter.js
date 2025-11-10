@@ -14,7 +14,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
         {selectedSituation && (
           <div className="selected-situation">
             Recherche : {selectedSituation === 'travail' ? 'Travailleurs' : 
-                        selectedSituation === 'formation' ? 'Non travailleurs' : 'Tous les membres'}
+                        selectedSituation === 'non-travail' ? 'Non travailleurs' : 'Tous les membres'} {/* Changé ici */}
           </div>
         )}
       </div>
@@ -60,16 +60,16 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
         </>
       )}
 
-      {/* Filtres spécifiques aux personnes en formation */}
-      {selectedSituation === 'formation' && (
+      {/* CORRECTION ICI : 'formation' → 'non-travail' */}
+      {selectedSituation === 'non-travail' && (
         <div className="filter-group">
-          <label>🎓 Recherche par non travailleur</label>
+          <label>🎓 Recherche par domaine</label>
           <input
             type="text"
-            name="Non travailleur"
+            name="formation"
             value={filters.formation}
             onChange={handleInputChange}
-            placeholder="Ex: Mécanicien, Médecine, Informatique..."
+            placeholder="Ex: Mécanique, Informatique, Commerce..."
             className="filter-input"
           />
         </div>
@@ -97,7 +97,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
           name="region"
           value={filters.region}
           onChange={handleInputChange}
-          placeholder="Ex: Bamako, bougouni..."
+          placeholder="Ex: Bamako, Bougouni..."
           className="filter-input"
         />
       </div>
@@ -109,7 +109,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
           name="quartier"
           value={filters.quartier}
           onChange={handleInputChange}
-          placeholder="Ex: Titibougou, kalanba-coura..."
+          placeholder="Ex: Titibougou, Kalanba-coura..."
           className="filter-input"
         />
       </div>

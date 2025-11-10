@@ -23,7 +23,7 @@ const SearchResults = ({ persons, selectedSituation }) => {
 
       const matchesSituation = selectedSituation === 'tous' ||
                                (selectedSituation === 'travail' && person.travail === true) ||
-                               (selectedSituation === 'formation' && person.travail === false);
+                               (selectedSituation === 'non-travail' && person.travail === false);
 
       // Filtre profession pour tous les types
       const matchesProfession = filters.profession === '' || 
@@ -38,13 +38,13 @@ const SearchResults = ({ persons, selectedSituation }) => {
         (person.formation && person.formation.toLowerCase().includes(filters.formation.toLowerCase()));
 
       const matchesRegion = filters.region === '' || 
-        person.region.toLowerCase().includes(filters.region.toLowerCase());
+        (person.region && person.region.toLowerCase().includes(filters.region.toLowerCase()));
 
       const matchesQuartier = filters.quartier === '' || 
-        person.quartier.toLowerCase().includes(filters.quartier.toLowerCase());
+        (person.quartier && person.quartier.toLowerCase().includes(filters.quartier.toLowerCase()));
 
       const matchesDaara = filters.daara === '' || 
-        person.daara.toLowerCase().includes(filters.daara.toLowerCase());
+        (person.daara && person.daara.toLowerCase().includes(filters.daara.toLowerCase()));
 
       return matchesSearch && 
              matchesSituation && 
@@ -68,7 +68,7 @@ const SearchResults = ({ persons, selectedSituation }) => {
   const getSituationTitle = () => {
     switch(selectedSituation) {
       case 'travail': return 'Travailleurs';
-      case 'formation': return 'Personnes en quête d’emploi';
+      case 'non-travail': return 'Personnes en quête d\'emploi';
       case 'tous': return 'Tous les membres';
       default: return 'Résultats';
     }
@@ -97,7 +97,7 @@ const SearchResults = ({ persons, selectedSituation }) => {
               <p className="search-type">
                 Type : <strong>
                   {selectedSituation === 'travail' ? 'Travailleurs' : 
-                   selectedSituation === 'formation' ? 'Non travailleur' : 'Tous les membres'}
+                   selectedSituation === 'non-travail' ? 'Non travailleurs' : 'Tous les membres'}
                 </strong>
               </p>
             )}
@@ -113,7 +113,7 @@ const SearchResults = ({ persons, selectedSituation }) => {
             <div className="no-results">
               <div className="no-results-icon">
                 {selectedSituation === 'travail' ? '💼' : 
-                 selectedSituation === 'formation' ? '👤' : '🔍'}
+                 selectedSituation === 'non-travail' ? '👤' : '🔍'}
               </div>
               <h3>Aucun membre ne correspond à votre recherche</h3>
               <p>Essayez de modifier vos critères de recherche ou élargissez vos filtres</p>
