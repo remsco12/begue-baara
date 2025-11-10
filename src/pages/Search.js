@@ -45,7 +45,7 @@ const Search = ({ persons }) => {
               >
                 <div className="choice-icon">👤</div>
                 <div className="choice-text">
-                  <h3>En quête d’emploi</h3>
+                  <h3>Non travailleurs</h3>
                   <p>Personnes en quête d’emploi</p>
                 </div>
                 <div className="choice-arrow">→</div>

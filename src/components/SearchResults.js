@@ -68,7 +68,7 @@ const SearchResults = ({ persons, selectedSituation }) => {
   const getSituationTitle = () => {
     switch(selectedSituation) {
       case 'travail': return 'Travailleurs';
-      case 'formation': return 'Personnes en formation';
+      case 'formation': return 'Personnes en quête d’emploi';
       case 'tous': return 'Tous les membres';
       default: return 'Résultats';
     }
@@ -97,7 +97,7 @@ const SearchResults = ({ persons, selectedSituation }) => {
               <p className="search-type">
                 Type : <strong>
                   {selectedSituation === 'travail' ? 'Travailleurs' : 
-                   selectedSituation === 'formation' ? 'En formation' : 'Tous les membres'}
+                   selectedSituation === 'formation' ? 'Non travailleur' : 'Tous les membres'}
                 </strong>
               </p>
             )}
