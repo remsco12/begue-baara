@@ -168,7 +168,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
                   <small>
                     {selectedChoice === 'travail' 
                       ? 'Vous êtes actuellement en poste professionnel' 
-                      : 'Vous êtes en formation, études ou autre situation'
+                      : 'Vous êtes à la recherche d’un emploi'
                     }
                   </small>
                 </div>
@@ -205,13 +205,13 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack }) => {
             )}
 
             {/* Champs pour non-travailleurs */}
-            {selectedChoice === 'formation' && (
+            {selectedChoice === 'Profession' && (
               <div className="option-fields">
                 <div className="form-group">
-                  <label>Formation actuelle *</label>
+                  <label>Profession *</label>
                   <input
                     type="text"
-                    name="formation"
+                    name="Profession"
                     value={formData.formation}
                     onChange={handleChange}
                     required
