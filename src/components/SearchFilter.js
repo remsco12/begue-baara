@@ -63,13 +63,13 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
       {/* Filtres spécifiques aux personnes en formation */}
       {selectedSituation === 'formation' && (
         <div className="filter-group">
-          <label>🎓 Recherche par formation</label>
+          <label>🎓 Recherche par non travailleur</label>
           <input
             type="text"
-            name="formation"
+            name="Non travailleur"
             value={filters.formation}
             onChange={handleInputChange}
-            placeholder="Ex: Étudiant en Médecine, Formation en Informatique..."
+            placeholder="Ex: Mécanicien, Médecine, Informatique..."
             className="filter-input"
           />
         </div>
