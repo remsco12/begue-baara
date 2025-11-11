@@ -3,9 +3,11 @@ import SearchFilter from './SearchFilter';
 import PersonCard from './PersonCard';
 import '../styles/Search.css';
 
-const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
+const SearchResults = ({ persons, selectedSituation, onDeletePerson }) => {
   const [filters, setFilters] = useState({
     searchTerm: '',
+    genre: '', // Nouveau filtre genre
+    situationMatrimoniale: '',
     profession: '',
     entreprise: '',
     formation: '',
@@ -23,7 +25,6 @@ const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
     }
   };
 
-
   const filteredPersons = useMemo(() => {
     return persons.filter(person => {
       const matchesSearch = filters.searchTerm === '' || 
@@ -34,6 +35,14 @@ const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
       const matchesSituation = selectedSituation === 'tous' ||
                                (selectedSituation === 'travail' && person.travail === true) ||
                                (selectedSituation === 'non-travail' && person.travail === false);
+
+      // Filtre genre
+      const matchesGenre = filters.genre === '' || 
+        (person.genre && person.genre === filters.genre);
+
+      // Filtre situation matrimoniale
+      const matchesSituationMatrimoniale = filters.situationMatrimoniale === '' || 
+        (person.situationMatrimoniale && person.situationMatrimoniale === filters.situationMatrimoniale);
 
       // Filtre profession pour tous les types
       const matchesProfession = filters.profession === '' || 
@@ -58,6 +67,8 @@ const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
 
       return matchesSearch && 
              matchesSituation && 
+             matchesGenre &&
+             matchesSituationMatrimoniale &&
              matchesProfession && 
              matchesEntreprise && 
              matchesFormation && 
@@ -84,14 +95,17 @@ const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
     }
   };
 
-  // Compter les travailleurs et non-travailleurs pour l'affichage "Tous les membres"
+  // Compter les statistiques pour l'affichage "Tous les membres"
   const stats = useMemo(() => {
     if (selectedSituation === 'tous') {
       const travailleurs = filteredPersons.filter(person => person.travail === true).length;
       const nonTravailleurs = filteredPersons.filter(person => person.travail === false).length;
-      return { travailleurs, nonTravailleurs };
+      const hommes = filteredPersons.filter(person => person.genre === 'masculin').length;
+      const femmes = filteredPersons.filter(person => person.genre === 'feminin').length;
+      
+      return { travailleurs, nonTravailleurs, hommes, femmes };
     }
-    return { travailleurs: 0, nonTravailleurs: 0 };
+    return { travailleurs: 0, nonTravailleurs: 0, hommes: 0, femmes: 0 };
   }, [filteredPersons, selectedSituation]);
 
   return (
@@ -111,7 +125,17 @@ const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
             <div className="stat-item non-travail-stat">
               <span className="stat-icon">👤</span>
               <span className="stat-count">{stats.nonTravailleurs}</span>
-              <span className="stat-label">En recherche</span>
+              <span className="stat-label">Non travailleur</span>
+            </div>
+            <div className="stat-item homme-stat">
+              <span className="stat-icon">👨</span>
+              <span className="stat-count">{stats.hommes}</span>
+              <span className="stat-label">Hommes</span>
+            </div>
+            <div className="stat-item femme-stat">
+              <span className="stat-icon">👩</span>
+              <span className="stat-count">{stats.femmes}</span>
+              <span className="stat-label">Femmes</span>
             </div>
           </div>
         )}
@@ -140,15 +164,15 @@ const SearchResults = ({ persons, selectedSituation, onDeletePerson  }) => {
           </div>
 
           <div className="persons-grid">
-      {filteredPersons.map(person => (
-        <PersonCard 
-          key={person.id} 
-          person={person} 
-          showStatus={selectedSituation === 'tous'}
-          onDelete={handleDeletePerson}
-        />
-      ))}
-    </div>
+            {filteredPersons.map(person => (
+              <PersonCard 
+                key={person.id} 
+                person={person} 
+                showStatus={selectedSituation === 'tous'}
+                onDelete={handleDeletePerson}
+              />
+            ))}
+          </div>
 
           {filteredPersons.length === 0 && (
             <div className="no-results">

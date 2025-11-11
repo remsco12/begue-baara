@@ -14,7 +14,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
         {selectedSituation && (
           <div className="selected-situation">
             Recherche : {selectedSituation === 'travail' ? 'Travailleurs' : 
-                        selectedSituation === 'non-travail' ? 'Non travailleurs' : 'Tous les membres'} {/* Changé ici */}
+                        selectedSituation === 'non-travail' ? 'Non travailleurs' : 'Tous les membres'}
           </div>
         )}
       </div>
@@ -29,6 +29,37 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
           placeholder="Nom, prénom, téléphone..."
           className="filter-input"
         />
+      </div>
+
+      {/* Filtres démographiques - SEPARES */}
+      <div className="filter-group">
+        <label>👨‍👩‍👧‍👦 Genre</label>
+        <select
+          name="genre"
+          value={filters.genre}
+          onChange={handleInputChange}
+          className="filter-select"
+        >
+          <option value="">Tous les genres</option>
+          <option value="masculin">👨 Masculin</option>
+          <option value="feminin">👩 Féminin</option>
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>💍 Situation matrimoniale</label>
+        <select
+          name="situationMatrimoniale"
+          value={filters.situationMatrimoniale}
+          onChange={handleInputChange}
+          className="filter-select"
+        >
+          <option value="">Toutes les situations</option>
+          <option value="celibataire">Célibataire</option>
+          <option value="marie">Marié(e)</option>
+          <option value="divorce">Divorcé(e)</option>
+          <option value="veuf">Veuf/Veuve</option>
+        </select>
       </div>
 
       {/* Filtres spécifiques aux travailleurs */}
@@ -60,7 +91,7 @@ const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
         </>
       )}
 
-      {/* CORRECTION ICI : 'formation' → 'non-travail' */}
+      {/* Filtres spécifiques aux non-travailleurs */}
       {selectedSituation === 'non-travail' && (
         <div className="filter-group">
           <label>🎓 Recherche par domaine</label>

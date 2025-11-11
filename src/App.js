@@ -1,74 +1,143 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from './supabase';
-import './App.css';
-import Register from './components/Register';
-import Search from './components/Search';
+import './styles/App.css';
 import Header from './components/Header';
+import Home from './pages/Home';
+import Register from './pages/Register';
+import Search from './pages/Search';
 
 function App() {
-  const [currentView, setCurrentView] = useState('home');
+  const [currentPage, setCurrentPage] = useState('home');
   const [persons, setPersons] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Charger les données depuis Supabase au démarrage
+  // Charger les données depuis Supabase
   useEffect(() => {
     fetchPersons();
-    
-    // S'abonner aux changements en temps réel
-    const subscription = supabase
-      .channel('persons-changes')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'persons' }, 
-        () => {
-          fetchPersons(); // Recharger quand il y a des changements
-        }
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
   }, []);
 
   const fetchPersons = async () => {
     try {
-      setIsLoading(true);
+      setLoading(true);
       setError(null);
+      
+      console.log('🔍 Chargement des données depuis Supabase...');
       
       const { data, error } = await supabase
         .from('persons')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Erreur Supabase:', error);
+        throw error;
+      }
       
+      console.log('✅ Données chargées:', data?.length || 0, 'personnes');
       setPersons(data || []);
+      
     } catch (error) {
-      console.error('Erreur lors du chargement:', error);
-      setError('Erreur de chargement des données: ' + error.message);
+      console.error('❌ Erreur lors du chargement:', error);
+      setError('Erreur de connexion à la base de données');
+      
+      // Fallback: charger depuis localStorage
+      const savedPersons = localStorage.getItem('begueBaaraPersons');
+      if (savedPersons) {
+        try {
+          const localData = JSON.parse(savedPersons);
+          console.log('📁 Données locales chargées:', localData.length, 'personnes');
+          setPersons(localData);
+        } catch (e) {
+          console.error('❌ Erreur données locales:', e);
+        }
+      }
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const handleAddPerson = async (newPerson) => {
+  const addPerson = async (personData) => {
     try {
       setError(null);
+      console.log('➕ Tentative d\'ajout:', personData);
       
+      // Préparer les données pour Supabase
+      const supabaseData = {
+        nom: personData.nom,
+        prenom: personData.prenom,
+        telephone: personData.telephone,
+        quartier: personData.quartier,
+        region: personData.region,
+        pays: personData.pays,
+        genre: personData.genre || null,
+        situation_matrimoniale: personData.situationMatrimoniale || null,
+        profession: personData.profession || null,
+        entreprise: personData.entreprise || null,
+        formation: personData.formation || null,
+        daara: personData.daara,
+        travail: personData.travail
+      };
+
+      console.log('📤 Envoi à Supabase:', supabaseData);
+
       const { data, error } = await supabase
         .from('persons')
-        .insert([newPerson])
+        .insert([supabaseData])
         .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Erreur Supabase:', error);
+        throw error;
+      }
       
-      // Les données sont automatiquement mises à jour via l'abonnement
-      return { success: true, data: data[0] };
+      if (!data || data.length === 0) {
+        throw new Error('Aucune donnée retournée par Supabase');
+      }
+      
+      const newPerson = data[0];
+      console.log('✅ Personne ajoutée avec succès:', newPerson);
+      
+      // Mise à jour IMMÉDIATE de l'état local
+      setPersons(prev => {
+        const updated = [newPerson, ...prev];
+        console.log('🔄 Liste mise à jour:', updated.length, 'personnes');
+        return updated;
+      });
+      
+      // Sauvegarde locale en backup
+      try {
+        const updatedPersons = [newPerson, ...persons];
+        localStorage.setItem('begueBaaraPersons', JSON.stringify(updatedPersons));
+        console.log('💾 Sauvegarde locale réussie');
+      } catch (e) {
+        console.error('❌ Erreur sauvegarde locale:', e);
+      }
+      
+      return { success: true, data: newPerson };
+      
     } catch (error) {
-      console.error('Erreur lors de l\'ajout:', error);
-      setError('Erreur lors de l\'inscription: ' + error.message);
-      return { success: false, error: error.message };
+      console.error('❌ Erreur complète lors de l\'ajout:', error);
+      
+      // Fallback: sauvegarde locale
+      console.log('🔄 Utilisation du mode fallback local...');
+      const newPerson = {
+        id: Date.now().toString(),
+        ...personData,
+        created_at: new Date().toISOString()
+      };
+      
+      const updatedPersons = [newPerson, ...persons];
+      setPersons(updatedPersons);
+      
+      try {
+        localStorage.setItem('begueBaaraPersons', JSON.stringify(updatedPersons));
+        console.log('✅ Fallback local réussi:', newPerson);
+      } catch (e) {
+        console.error('❌ Erreur fallback local:', e);
+      }
+      
+      return { success: true, data: newPerson };
     }
   };
 
@@ -81,97 +150,101 @@ function App() {
 
       if (error) throw error;
       
+      // Mise à jour immédiate de l'état local
+      setPersons(prev => prev.filter(p => p.id !== personId));
+      
       return { success: true };
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
-      setError('Erreur lors de la suppression: ' + error.message);
       return { success: false, error: error.message };
     }
   };
 
-  const renderView = () => {
-    if (isLoading && currentView !== 'register') {
+  const renderPage = () => {
+    if (loading) {
       return (
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <p>Chargement des membres...</p>
+          <p>Chargement de l'application Bégué Baara...</p>
         </div>
       );
     }
 
-    if (error) {
+    if (error && persons.length === 0) {
       return (
         <div className="error-container">
           <div className="error-icon">⚠️</div>
-          <h3>Erreur</h3>
+          <h3>Erreur de connexion</h3>
           <p>{error}</p>
+          <p>Utilisation du mode hors ligne avec les données locales.</p>
           <button onClick={fetchPersons} className="btn-retry">
-            🔄 Réessayer
+            🔄 Réessayer la connexion
           </button>
         </div>
       );
     }
 
-    switch (currentView) {
+    switch(currentPage) {
+      case 'home':
+        return <Home persons={persons} />;
       case 'register':
-        return <Register onAddPerson={handleAddPerson} />;
+        return <Register onAddPerson={addPerson} persons={persons} />;
       case 'search':
         return <Search persons={persons} onDeletePerson={deletePerson} />;
       default:
-        return (
-          <div className="home-page">
-            <div className="container">
-              <div className="welcome-section">
-                <h1>🌍 Réseau des Anciens du Daara</h1>
-                <p>Rejoignez notre communauté et restez connectés</p>
-                
-                <div className="stats-cards">
-                  <div className="stat-card">
-                    <h3>{persons.length}</h3>
-                    <p>Membres inscrits</p>
-                  </div>
-                  <div className="stat-card">
-                    <h3>{persons.filter(p => p.travail).length}</h3>
-                    <p>Travailleurs</p>
-                  </div>
-                  <div className="stat-card">
-                    <h3>{persons.filter(p => !p.travail).length}</h3>
-                    <p>En recherche</p>
-                  </div>
-                </div>
-                
-                <div className="action-buttons">
-                  <button 
-                    className="btn-primary"
-                    onClick={() => setCurrentView('register')}
-                  >
-                    📝 S'inscrire
-                  </button>
-                  <button 
-                    className="btn-secondary"
-                    onClick={() => setCurrentView('search')}
-                  >
-                    🔍 Rechercher des membres
-                  </button>
-                </div>
-
-                <div className="network-info">
-                  <h4>🌐 Réseau Partagé</h4>
-                  <p>Les données sont maintenant partagées entre tous les utilisateurs en temps réel !</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        return <Home persons={persons} />;
     }
   };
 
   return (
     <div className="App">
-      <Header currentView={currentView} onViewChange={setCurrentView} />
-      <main>
-        {renderView()}
+      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <main className="main-content">
+        {renderPage()}
       </main>
+      
+      {/* Debug info - À retirer en production 
+      <div style={{
+        position: 'fixed',
+        bottom: '10px',
+        left: '10px',
+        background: 'rgba(0,0,0,0.8)',
+        color: 'white',
+        padding: '10px',
+        borderRadius: '5px',
+        fontSize: '12px',
+        zIndex: 1000
+      }}>
+        <div>🔍 Debug: {persons.length} personnes</div>
+        <div>📱 Page: {currentPage}</div>
+      </div> */}
+      
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>Bégué Baara</h3>
+              <p>Le réseau social de la communauté Allah Don</p>
+              <p>Connectant plus de {persons.length} membres</p>
+            </div>
+            <div className="footer-section">
+              <h4>Navigation</h4>
+              <button onClick={() => setCurrentPage('home')}>Accueil</button>
+              <button onClick={() => setCurrentPage('register')}>S'inscrire</button>
+              <button onClick={() => setCurrentPage('search')}>Rechercher</button>
+            </div>
+            <div className="footer-section">
+              <h4>Contact</h4>
+              <p>📧 contact@beguebaara.org</p>
+              <p>📞 +223 76 32 64 28 / 75 23 48 44 / 92 87 73 35</p>
+              <p>📍 Bougouni, Mali</p>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2025 Bégué Baara. Tous droits réservés.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

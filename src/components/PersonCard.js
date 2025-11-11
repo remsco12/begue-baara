@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/PersonCard.css';
 
-const PersonCard = ({ person, showStatus = false, onDelete  }) => {
+const PersonCard = ({ person, showStatus = false, onDelete }) => {
   const isTravailleur = person.travail === true;
   
   // Fonction pour générer une couleur basée sur le statut
@@ -18,6 +18,36 @@ const PersonCard = ({ person, showStatus = false, onDelete  }) => {
     return `${prenomInitial}${nomInitial}`;
   };
 
+  // Fonction pour afficher le genre
+  const getGenreIcon = () => {
+    return person.genre === 'masculin' ? '👨' : person.genre === 'feminin' ? '👩' : '👤';
+  };
+
+  const getGenreLabel = () => {
+    return person.genre === 'masculin' ? 'Homme' : person.genre === 'feminin' ? 'Femme' : '';
+  };
+
+  // Fonction pour afficher la situation matrimoniale
+  const getSituationMatrimonialeIcon = () => {
+    const situations = {
+      'celibataire': '💛',
+      'marie': '💍',
+      'divorce': '💔',
+      'veuf': '⚫'
+    };
+    return situations[person.situationMatrimoniale] || '';
+  };
+
+  const getSituationMatrimonialeLabel = () => {
+    const situations = {
+      'celibataire': 'Célibataire',
+      'marie': 'Marié(e)',
+      'divorce': 'Divorcé(e)',
+      'veuf': 'Veuf/Veuve'
+    };
+    return situations[person.situationMatrimoniale] || '';
+  };
+
   return (
     <div className={`person-card ${isTravailleur ? 'travail' : 'non-travail'}`}>
       {/* Badge de statut */}
@@ -26,8 +56,8 @@ const PersonCard = ({ person, showStatus = false, onDelete  }) => {
           {isTravailleur ? '💼 Travaille' : '👤 Recherche'}
         </div>
       )}
-
-      {/* Bouton de suppression */}
+      
+      {/* Bouton de suppression 
       {onDelete && (
         <button 
           className="delete-btn"
@@ -36,7 +66,7 @@ const PersonCard = ({ person, showStatus = false, onDelete  }) => {
         >
           🗑️
         </button>
-      )}
+      )}  */}
       
       <div className="person-photo">
         {person.photo ? (
@@ -52,7 +82,24 @@ const PersonCard = ({ person, showStatus = false, onDelete  }) => {
       </div>
       
       <div className="person-info">
-        <h3>{person.prenom} {person.nom}</h3>
+        <h3>
+          {getGenreIcon()} {person.prenom} {person.nom}
+        </h3>
+        
+        {/* Informations démographiques */}
+        <div className="person-demographics">
+          {person.genre && (
+            <span className="person-genre">
+              {getGenreLabel()}
+            </span>
+          )}
+          {person.situationMatrimoniale && (
+            <span className="person-situation-matrimoniale">
+              {getSituationMatrimonialeIcon()} {getSituationMatrimonialeLabel()}
+            </span>
+          )}
+        </div>
+        
         <p className="person-phone">📞 {person.telephone}</p>
         <p className="person-location">📍 {person.quartier}, {person.region}</p>
         

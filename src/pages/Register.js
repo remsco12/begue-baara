@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import PersonForm from '../components/PersonForm';
-import '../styles/Register.css';
 
-const Register = ({ onAddPerson }) => {
+const Register = ({ onAddPerson, persons }) => {  // Ajout de persons en prop
   const [step, setStep] = useState('choice');
   const [selectedChoice, setSelectedChoice] = useState('');
 
@@ -27,7 +26,6 @@ const Register = ({ onAddPerson }) => {
             </div>
             
             <div className="choice-buttons">
-              {/* Bouton Je travaille */}
               <button 
                 className={`choice-button travail ${selectedChoice === 'travail' ? 'selected' : ''}`}
                 onClick={() => handleChoiceSelect('travail')}
@@ -40,10 +38,9 @@ const Register = ({ onAddPerson }) => {
                 <div className="choice-arrow">→</div>
               </button>
 
-              {/* CORRECTION ICI : 'formation' → 'non-travail' */}
               <button 
-                className={`choice-button formation ${selectedChoice === 'non-travail' ? 'selected' : ''}`}
-                onClick={() => handleChoiceSelect('non-travail')} // Changé ici
+                className={`choice-button non-travail ${selectedChoice === 'non-travail' ? 'selected' : ''}`}
+                onClick={() => handleChoiceSelect('non-travail')}
               >
                 <div className="choice-icon">👤</div>
                 <div className="choice-text">
@@ -69,6 +66,7 @@ const Register = ({ onAddPerson }) => {
           onAddPerson={onAddPerson} 
           selectedChoice={selectedChoice}
           onBack={handleBackToChoice}
+          persons={persons}  // Passage de la liste des personnes
         />
       </div>
     </div>
