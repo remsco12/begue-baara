@@ -20,6 +20,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [confirmationData, setConfirmationData] = useState(null); // Nouvel état pour stocker les données de confirmation
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +29,6 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
       [name]: value
     }));
     
-    // Effacer l'erreur quand l'utilisateur modifie le champ
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -37,12 +37,10 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
     }
   };
 
-  // Fonction pour vérifier les doublons complets
   const checkForCompleteDuplicates = () => {
     const newErrors = {};
     
     if (selectedChoice === 'travail') {
-      // Vérification pour les travailleurs: prenom, nom, profession, entreprise, telephone
       const duplicateTravailleur = persons.find(person => 
         person.travail === true &&
         person.prenom?.toLowerCase() === formData.prenom.toLowerCase() &&
@@ -58,7 +56,6 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
     }
     
     if (selectedChoice === 'non-travail') {
-      // Vérification pour les non-travailleurs: prenom, nom, formation, telephone
       const duplicateNonTravailleur = persons.find(person => 
         person.travail === false &&
         person.prenom?.toLowerCase() === formData.prenom.toLowerCase() &&
@@ -78,7 +75,6 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Vérifier que tous les champs requis sont remplis
     if (selectedChoice === 'travail' && (!formData.profession || !formData.entreprise)) {
       setErrors({ profession: 'Veuillez remplir tous les champs requis pour les travailleurs' });
       return;
@@ -89,7 +85,6 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
       return;
     }
     
-    // Vérifier les doublons complets avant d'afficher la confirmation
     const duplicateErrors = checkForCompleteDuplicates();
     
     if (Object.keys(duplicateErrors).length > 0) {
@@ -98,6 +93,9 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
     }
     
     setErrors({});
+    
+    // Stocker les données actuelles pour la confirmation
+    setConfirmationData({ ...formData });
     setShowConfirmation(true);
   };
 
@@ -108,6 +106,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
     if (Object.keys(duplicateErrors).length > 0) {
       setErrors(duplicateErrors);
       setShowConfirmation(false);
+      setConfirmationData(null);
       return;
     }
     
@@ -138,6 +137,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
         formation: '', daara: ''
       });
       setShowConfirmation(false);
+      setConfirmationData(null);
       setErrors({});
       alert('✅ Inscription réussie ! Votre profil est maintenant visible par tous.');
       onBack();
@@ -150,6 +150,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
 
   const cancelSubmission = () => {
     setShowConfirmation(false);
+    setConfirmationData(null);
   };
 
   const getFieldDisplayValue = (value) => {
@@ -176,6 +177,9 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
     return situations[value] || value;
   };
 
+  // Utiliser confirmationData si disponible, sinon formData
+  const displayData = confirmationData || formData;
+
   return (
     <div className="form-container">
       <form className="person-form" onSubmit={handleSubmit}>
@@ -186,10 +190,9 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
             🌐 Votre profil sera visible par tous les membres
           </div>
           
-           {Message d'information sur les doublons }
           <div className="duplicate-warning">
             ⚠️ Le système vérifie les doublons complets (Prénom + Nom + Métier + Téléphone)
-          </div>*/}
+          </div> */ }
         </div>
         
         <div className="selected-choice-banner">
@@ -437,7 +440,6 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
           </section>
         </div>
 
-        {/* Affichage des erreurs générales */}
         {(errors.profession || errors.formation) && (
           <div className="global-error">
             <h4>🚫 Inscription impossible - Doublon détecté</h4>
@@ -458,7 +460,7 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
       </form>
 
       {/* Modal de confirmation */}
-      {showConfirmation && (
+      {showConfirmation && confirmationData && (
         <div className="modal-overlay">
           <div className="confirmation-modal">
             <div className="modal-header">
@@ -468,15 +470,89 @@ const PersonForm = ({ onAddPerson, selectedChoice, onBack, persons }) => {
                 🌍 Ces informations seront publiques dans le réseau
               </div>
               
-              {/* Message de confirmation de non-doublon */}
               <div className="duplicate-check-success">
                 ✅ Aucun doublon détecté - Inscription autorisée
               </div>
             </div>
 
             <div className="confirmation-content">
-              {/* Le contenu reste le même */}
-              {/* ... */}
+              <div className="confirmation-section">
+                <h4>👤 Informations Personnelles</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Prénom:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(displayData.prenom)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Nom:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(displayData.nom)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Genre:</span>
+                  <span className="confirmation-value">{getGenreLabel(displayData.genre)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Téléphone:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(displayData.telephone)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Situation matrimoniale:</span>
+                  <span className="confirmation-value">
+                    {getSituationMatrimonialeLabel(displayData.situationMatrimoniale)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="confirmation-section">
+                <h4>📍 Localisation</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Quartier:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(displayData.quartier)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Région:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(displayData.region)}</span>
+                </div>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Pays:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(displayData.pays)}</span>
+                </div>
+              </div>
+
+              <div className="confirmation-section">
+                <h4>💼 Situation Professionnelle</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Statut:</span>
+                  <span className="confirmation-value">
+                    {selectedChoice === 'travail' ? 'Travailleur' : 'En recherche d\'emploi'}
+                  </span>
+                </div>
+                {selectedChoice === 'travail' && (
+                  <>
+                    <div className="confirmation-row">
+                      <span className="confirmation-label">Profession:</span>
+                      <span className="confirmation-value">{getFieldDisplayValue(displayData.profession)}</span>
+                    </div>
+                    <div className="confirmation-row">
+                      <span className="confirmation-label">Entreprise:</span>
+                      <span className="confirmation-value">{getFieldDisplayValue(displayData.entreprise)}</span>
+                    </div>
+                  </>
+                )}
+                {selectedChoice === 'non-travail' && (
+                  <div className="confirmation-row">
+                    <span className="confirmation-label">Métier de formation:</span>
+                    <span className="confirmation-value">{getFieldDisplayValue(displayData.formation)}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="confirmation-section">
+                <h4>📚 Information Daara</h4>
+                <div className="confirmation-row">
+                  <span className="confirmation-label">Nom du Daara:</span>
+                  <span className="confirmation-value">{getFieldDisplayValue(displayData.daara)}</span>
+                </div>
+              </div>
             </div>
 
             <div className="modal-actions">
