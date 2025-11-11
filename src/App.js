@@ -6,6 +6,42 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Search from './pages/Search';
 
+// Fonction de mapping centralisée
+const mapPersonFromSupabase = (person) => ({
+  id: person.id,
+  nom: person.nom,
+  prenom: person.prenom,
+  telephone: person.telephone,
+  quartier: person.quartier,
+  region: person.region,
+  pays: person.pays,
+  genre: person.genre,
+  situationMatrimoniale: person.situation_matrimoniale, // Mapping du underscore vers camelCase
+  profession: person.profession,
+  entreprise: person.entreprise,
+  formation: person.formation,
+  daara: person.daara,
+  travail: person.travail,
+  created_at: person.created_at
+});
+
+// Fonction inverse pour l'ajout
+const mapPersonToSupabase = (personData) => ({
+  nom: personData.nom,
+  prenom: personData.prenom,
+  telephone: personData.telephone,
+  quartier: personData.quartier,
+  region: personData.region,
+  pays: personData.pays,
+  genre: personData.genre || null,
+  situation_matrimoniale: personData.situationMatrimoniale || null, // camelCase vers underscore
+  profession: personData.profession || null,
+  entreprise: personData.entreprise || null,
+  formation: personData.formation || null,
+  daara: personData.daara,
+  travail: personData.travail
+});
+
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [persons, setPersons] = useState([]);
@@ -34,8 +70,13 @@ function App() {
         throw error;
       }
       
-      console.log('✅ Données chargées:', data?.length || 0, 'personnes');
-      setPersons(data || []);
+      // APPLICATION DU MAPPAGE
+      const mappedData = (data || []).map(mapPersonFromSupabase);
+      
+      console.log('✅ Données chargées et mappées:', mappedData.length, 'personnes');
+      console.log('📋 Exemple de données mappées:', mappedData[0]);
+      
+      setPersons(mappedData);
       
     } catch (error) {
       console.error('❌ Erreur lors du chargement:', error);
@@ -62,22 +103,8 @@ function App() {
       setError(null);
       console.log('➕ Tentative d\'ajout:', personData);
       
-      // Préparer les données pour Supabase
-      const supabaseData = {
-        nom: personData.nom,
-        prenom: personData.prenom,
-        telephone: personData.telephone,
-        quartier: personData.quartier,
-        region: personData.region,
-        pays: personData.pays,
-        genre: personData.genre || null,
-        situation_matrimoniale: personData.situationMatrimoniale || null,
-        profession: personData.profession || null,
-        entreprise: personData.entreprise || null,
-        formation: personData.formation || null,
-        daara: personData.daara,
-        travail: personData.travail
-      };
+      // Utilisation du mapping pour Supabase
+      const supabaseData = mapPersonToSupabase(personData);
 
       console.log('📤 Envoi à Supabase:', supabaseData);
 
@@ -95,7 +122,8 @@ function App() {
         throw new Error('Aucune donnée retournée par Supabase');
       }
       
-      const newPerson = data[0];
+      // Mapping de la réponse
+      const newPerson = mapPersonFromSupabase(data[0]);
       console.log('✅ Personne ajoutée avec succès:', newPerson);
       
       // Mise à jour IMMÉDIATE de l'état local
@@ -119,12 +147,14 @@ function App() {
     } catch (error) {
       console.error('❌ Erreur complète lors de l\'ajout:', error);
       
-      // Fallback: sauvegarde locale
+      // Fallback: sauvegarde locale avec mapping
       console.log('🔄 Utilisation du mode fallback local...');
       const newPerson = {
-        id: Date.now().toString(),
-        ...personData,
-        created_at: new Date().toISOString()
+        ...mapPersonFromSupabase({
+          id: Date.now().toString(),
+          ...mapPersonToSupabase(personData),
+          created_at: new Date().toISOString()
+        })
       };
       
       const updatedPersons = [newPerson, ...persons];
@@ -160,6 +190,7 @@ function App() {
     }
   };
 
+  // ... Le reste du code reste inchangé
   const renderPage = () => {
     if (loading) {
       return (
@@ -203,7 +234,7 @@ function App() {
         {renderPage()}
       </main>
       
-      {/* Debug info - À retirer en production 
+      {/* Debug info - À activer temporairement pour vérifier 
       <div style={{
         position: 'fixed',
         bottom: '10px',
@@ -217,7 +248,8 @@ function App() {
       }}>
         <div>🔍 Debug: {persons.length} personnes</div>
         <div>📱 Page: {currentPage}</div>
-      </div> */}
+        <div>💍 Situation matrimoniale: {persons[0]?.situationMatrimoniale || 'Non définie'}</div>
+      </div>  */}
       
       <footer className="footer">
         <div className="container">

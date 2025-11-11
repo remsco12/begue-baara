@@ -1,44 +1,26 @@
 import React from 'react';
 import '../styles/PersonCard.css';
 
-const PersonCard = ({ person, showStatus = false, onDelete }) => {
+const PersonCard = ({ person, showStatus = false }) => {
   const isTravailleur = person.travail === true;
   
-  // Fonction pour générer une couleur basée sur le statut
   const getProfileColor = () => {
     return isTravailleur 
       ? { background: 'linear-gradient(135deg, #27ae60, #2ecc71)', color: '#fff' }
       : { background: 'linear-gradient(135deg, #e74c3c, #e67e22)', color: '#fff' };
   };
 
-  // Fonction pour générer les initiales
   const getInitials = () => {
     const prenomInitial = person.prenom ? person.prenom.charAt(0).toUpperCase() : '';
     const nomInitial = person.nom ? person.nom.charAt(0).toUpperCase() : '';
     return `${prenomInitial}${nomInitial}`;
   };
 
-  // Fonction pour afficher le genre
-  const getGenreIcon = () => {
-    return person.genre === 'masculin' ? '👨' : person.genre === 'feminin' ? '👩' : '👤';
+  const getGenreDisplay = () => {
+    return person.genre === 'masculin' ? 'H' : person.genre === 'feminin' ? 'F' : '';
   };
 
-  const getGenreLabel = () => {
-    return person.genre === 'masculin' ? 'Homme' : person.genre === 'feminin' ? 'Femme' : '';
-  };
-
-  // Fonction pour afficher la situation matrimoniale
-  const getSituationMatrimonialeIcon = () => {
-    const situations = {
-      'celibataire': '💛',
-      'marie': '💍',
-      'divorce': '💔',
-      'veuf': '⚫'
-    };
-    return situations[person.situationMatrimoniale] || '';
-  };
-
-  const getSituationMatrimonialeLabel = () => {
+  const getSituationMatrimonialeDisplay = () => {
     const situations = {
       'celibataire': 'Célibataire',
       'marie': 'Marié(e)',
@@ -57,17 +39,6 @@ const PersonCard = ({ person, showStatus = false, onDelete }) => {
         </div>
       )}
       
-      {/* Bouton de suppression 
-      {onDelete && (
-        <button 
-          className="delete-btn"
-          onClick={() => onDelete(person.id, `${person.prenom} ${person.nom}`)}
-          title="Supprimer ce membre"
-        >
-          🗑️
-        </button>
-      )}  */}
-      
       <div className="person-photo">
         {person.photo ? (
           <img src={person.photo} alt={`${person.prenom} ${person.nom}`} />
@@ -82,20 +53,18 @@ const PersonCard = ({ person, showStatus = false, onDelete }) => {
       </div>
       
       <div className="person-info">
-        <h3>
-          {getGenreIcon()} {person.prenom} {person.nom}
-        </h3>
+        <h3>{person.prenom} {person.nom}</h3>
         
         {/* Informations démographiques */}
         <div className="person-demographics">
           {person.genre && (
             <span className="person-genre">
-              {getGenreLabel()}
+              {getGenreDisplay()}
             </span>
           )}
           {person.situationMatrimoniale && (
             <span className="person-situation-matrimoniale">
-              {getSituationMatrimonialeIcon()} {getSituationMatrimonialeLabel()}
+              {getSituationMatrimonialeDisplay()}
             </span>
           )}
         </div>
