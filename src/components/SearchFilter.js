@@ -1,0 +1,163 @@
+import React from 'react';
+import '../styles/SearchFilter.css';
+
+const SearchFilter = ({ filters, onFilterChange, selectedSituation }) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    onFilterChange({ target: { name, value } });
+  };
+
+  return (
+    <div className="search-filters">
+      <div className="filters-header">
+        <h3>🔍 Filtres de Recherche</h3>
+        {selectedSituation && (
+          <div className="selected-situation">
+            Recherche : {selectedSituation === 'travail' ? 'Travailleurs' : 
+                        selectedSituation === 'non-travail' ? 'Non travailleurs' : 'Tous les membres'}
+          </div>
+        )}
+      </div>
+
+      <div className="filter-group">
+        <label>Recherche globale</label>
+        <input
+          type="text"
+          name="searchTerm"
+          value={filters.searchTerm}
+          onChange={handleInputChange}
+          placeholder="Nom, prénom, téléphone..."
+          className="filter-input"
+        />
+      </div>
+
+      {/* Filtres démographiques - SEPARES */}
+      <div className="filter-group">
+        <label>👨‍👩‍👧‍👦 Genre</label>
+        <select
+          name="genre"
+          value={filters.genre}
+          onChange={handleInputChange}
+          className="filter-select"
+        >
+          <option value="">Tous les genres</option>
+          <option value="masculin">👨 Masculin</option>
+          <option value="feminin">👩 Féminin</option>
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>💍 Situation matrimoniale</label>
+        <select
+          name="situationMatrimoniale"
+          value={filters.situationMatrimoniale}
+          onChange={handleInputChange}
+          className="filter-select"
+        >
+          <option value="">Toutes les situations</option>
+          <option value="celibataire">Célibataire</option>
+          <option value="marie">Marié(e)</option>
+          <option value="divorce">Divorcé(e)</option>
+          <option value="veuf">Veuf/Veuve</option>
+        </select>
+      </div>
+
+      {/* Filtres spécifiques aux travailleurs */}
+      {selectedSituation === 'travail' && (
+        <>
+          <div className="filter-group">
+            <label>🔍 Recherche par profession</label>
+            <input
+              type="text"
+              name="profession"
+              value={filters.profession}
+              onChange={handleInputChange}
+              placeholder="Ex: Informaticien, Médecin, Enseignant..."
+              className="filter-input"
+            />
+          </div>
+
+          <div className="filter-group">
+            <label>🏢 Recherche par entreprise</label>
+            <input
+              type="text"
+              name="entreprise"
+              value={filters.entreprise}
+              onChange={handleInputChange}
+              placeholder="Nom de l'entreprise"
+              className="filter-input"
+            />
+          </div>
+        </>
+      )}
+
+      {/* Filtres spécifiques aux non-travailleurs */}
+      {selectedSituation === 'non-travail' && (
+        <div className="filter-group">
+          <label>🎓 Recherche par domaine</label>
+          <input
+            type="text"
+            name="formation"
+            value={filters.formation}
+            onChange={handleInputChange}
+            placeholder="Ex: Mécanique, Informatique, Commerce..."
+            className="filter-input"
+          />
+        </div>
+      )}
+
+      {/* Filtre profession pour "Tous les membres" ou mixte */}
+      {(selectedSituation === 'tous' || !selectedSituation) && (
+        <div className="filter-group">
+          <label>💼 Profession (tous types)</label>
+          <input
+            type="text"
+            name="profession"
+            value={filters.profession}
+            onChange={handleInputChange}
+            placeholder="Ex: Informaticien, Médecin, Étudiant..."
+            className="filter-input"
+          />
+        </div>
+      )}
+
+      <div className="filter-group">
+        <label>📍 Région</label>
+        <input
+          type="text"
+          name="region"
+          value={filters.region}
+          onChange={handleInputChange}
+          placeholder="Ex: Bamako, Bougouni..."
+          className="filter-input"
+        />
+      </div>
+
+      <div className="filter-group">
+        <label>🏘️ Quartier</label>
+        <input
+          type="text"
+          name="quartier"
+          value={filters.quartier}
+          onChange={handleInputChange}
+          placeholder="Ex: Titibougou, Kalanba-coura..."
+          className="filter-input"
+        />
+      </div>
+
+      <div className="filter-group">
+        <label>📚 Daara</label>
+        <input
+          type="text"
+          name="daara"
+          value={filters.daara}
+          onChange={handleInputChange}
+          placeholder="Nom du Daara"
+          className="filter-input"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default SearchFilter;

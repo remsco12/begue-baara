@@ -1,0 +1,221 @@
+.header {
+  background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+}
+
+.container {
+  max-width: none;
+  margin: 0 auto;
+  padding: 0 2px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  height: 160px; /* Hauteur augmentée pour l'image de 150px */
+  gap: 2px;
+  justify-content: space-between;
+}
+
+/* ENTÊTE - PREND TOUTE LA LARGEUR */
+.entete-section {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+
+.entete-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-right: 5px;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* IMAGE 1000px x 150px */
+.entete-image {
+  width: 1000px; /* Largeur fixe */
+  height: 150px; /* Hauteur fixe de 150px */
+  border-radius: 12px;
+  object-fit: cover; /* Couvre tout l'espace */
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.entete-icon {
+  font-size: 6rem; /* Plus grand pour la hauteur de 150px */
+  width: 1000px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+/* TEXTE COMPLÈTEMENT SUPPRIMÉ */
+.entete-text, .tagline {
+  display: none !important;
+}
+
+/* NAVIGATION */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+  flex-shrink: 0;
+  width: auto;
+  margin-left: auto;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.25);
+  color: white;
+  padding: 1rem 1.5rem; /* Padding augmenté */
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  height: fit-content;
+  flex-shrink: 0;
+}
+
+.nav-btn:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.nav-btn.active {
+  background: white;
+  color: #2c5aa0;
+  border-color: white;
+}
+
+/* COMPORTEMENT QUAND ON RÉDUIT */
+@media (max-width: 1400px) {
+  .entete-image {
+    width: 800px;
+    height: 120px; /* Proportion 1000:150 = 800:120 */
+  }
+  
+  .entete-icon {
+    width: 800px;
+    height: 120px;
+    font-size: 5rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .entete-image {
+    width: 600px;
+    height: 90px; /* Proportion 1000:150 = 600:90 */
+  }
+  
+  .entete-icon {
+    width: 600px;
+    height: 90px;
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .entete-image {
+    width: 500px;
+    height: 75px; /* Proportion 1000:150 = 500:75 */
+  }
+  
+  .entete-icon {
+    width: 500px;
+    height: 75px;
+    font-size: 3.5rem;
+  }
+  
+  .nav-btn {
+    padding: 0.9rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .header-content {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem 0;
+    gap: 1rem;
+  }
+  
+  .entete-section {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .entete-container {
+    border-right: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 0 0 1rem 0;
+    justify-content: center;
+  }
+  
+  .entete-image {
+    width: 400px;
+    height: 60px; /* Proportion 1000:150 = 400:60 */
+  }
+  
+  .entete-icon {
+    width: 400px;
+    height: 60px;
+    font-size: 3rem;
+  }
+  
+  .nav {
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .entete-image {
+    width: 300px;
+    height: 45px; /* Proportion 1000:150 = 300:45 */
+  }
+  
+  .entete-icon {
+    width: 300px;
+    height: 45px;
+    font-size: 2.5rem;
+  }
+  
+  .nav {
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+  
+  .nav-btn {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+}
