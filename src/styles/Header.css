@@ -5,20 +5,26 @@
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
-.container {
-  max-width: none;
+.header .container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2px;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header-content {
   display: flex;
   align-items: center;
-  height: 160px; /* Hauteur augmentée pour l'image de 150px */
-  gap: 2px;
+  height: 160px;
+  gap: 20px;
   justify-content: space-between;
+  width: 100%;
 }
 
 /* ENTÊTE - PREND TOUTE LA LARGEUR */
@@ -36,26 +42,27 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding-right: 5px;
+  padding-right: 20px;
   border-right: 2px solid rgba(255, 255, 255, 0.2);
   height: 100%;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* IMAGE 1000px x 150px */
+/* IMAGE */
 .entete-image {
-  width: 1000px; /* Largeur fixe */
-  height: 150px; /* Hauteur fixe de 150px */
+  width: 1000px;
+  height: 150px;
   border-radius: 12px;
-  object-fit: cover; /* Couvre tout l'espace */
+  object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.25);
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.1);
 }
 
 .entete-icon {
-  font-size: 6rem; /* Plus grand pour la hauteur de 150px */
+  font-size: 6rem;
   width: 1000px;
   height: 150px;
   display: flex;
@@ -77,7 +84,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   height: 100%;
   flex-shrink: 0;
   width: auto;
@@ -88,7 +95,7 @@
   background: transparent;
   border: 2px solid rgba(255,255,255,0.25);
   color: white;
-  padding: 1rem 1.5rem; /* Padding augmenté */
+  padding: 1rem 1.5rem;
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -117,7 +124,7 @@
 @media (max-width: 1400px) {
   .entete-image {
     width: 800px;
-    height: 120px; /* Proportion 1000:150 = 800:120 */
+    height: 120px;
   }
   
   .entete-icon {
@@ -130,7 +137,7 @@
 @media (max-width: 1200px) {
   .entete-image {
     width: 600px;
-    height: 90px; /* Proportion 1000:150 = 600:90 */
+    height: 90px;
   }
   
   .entete-icon {
@@ -143,7 +150,7 @@
 @media (max-width: 1000px) {
   .entete-image {
     width: 500px;
-    height: 75px; /* Proportion 1000:150 = 500:75 */
+    height: 75px;
   }
   
   .entete-icon {
@@ -180,7 +187,7 @@
   
   .entete-image {
     width: 400px;
-    height: 60px; /* Proportion 1000:150 = 400:60 */
+    height: 60px;
   }
   
   .entete-icon {
@@ -194,13 +201,18 @@
     width: 100%;
     height: auto;
     margin-left: 0;
+    flex-wrap: wrap;
   }
 }
 
 @media (max-width: 480px) {
+  .header .container {
+    padding: 0 10px;
+  }
+  
   .entete-image {
     width: 300px;
-    height: 45px; /* Proportion 1000:150 = 300:45 */
+    height: 45px;
   }
   
   .entete-icon {
@@ -210,12 +222,11 @@
   }
   
   .nav {
-    gap: 3px;
-    flex-wrap: wrap;
+    gap: 5px;
   }
   
   .nav-btn {
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
   }
 }
