@@ -518,11 +518,11 @@ function App() {
           </div>
           <div className="footer-bottom">
             <p>&copy; 2025 Bégué Baara. Tous droits réservés.</p>
-            <p className="footer-note">
+          {/* <p className="footer-note">
               {isOnline 
                 ? '✅ Connecté à Supabase (Plan Gratuit - Actif)' 
                 : '⚠️ Mode hors ligne - Synchronisation automatique à la reconnexion'}
-            </p>
+            </p> */}
           </div>
         </div>
       </footer>
